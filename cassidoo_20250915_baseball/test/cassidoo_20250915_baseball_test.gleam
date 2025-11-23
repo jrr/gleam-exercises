@@ -1,4 +1,6 @@
-import cassidoo_20250915_baseball as subject
+import cassidoo_20250915_baseball.{
+  GameDetails, Home, analyze_baseball_game, empty_game,
+}
 import gleeunit
 import gleeunit/should
 
@@ -25,16 +27,15 @@ pub fn main() -> Nil {
 //   }
 
 pub fn empty_game_test() {
-  subject.analyze_baseball_game([])
-  |> should.equal(subject.empty_game)
+  analyze_baseball_game([]) |> should.equal(empty_game)
 }
 
 pub fn example_test() {
-  subject.analyze_baseball_game([
+  analyze_baseball_game([
     #(1, 0),
     #(2, 2),
     #(0, 3),
     #(4, 1),
   ])
-  |> should.equal(subject.GameDetails(7, 6, [1, 2, 4], [3], subject.Home))
+  |> should.equal(GameDetails(7, 6, [1, 2, 4], [3], Home))
 }
