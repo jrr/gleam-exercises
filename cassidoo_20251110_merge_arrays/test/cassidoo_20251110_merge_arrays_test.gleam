@@ -1,7 +1,5 @@
-import atomic_array.{type AtomicArray}
-import cassidoo_20251110_merge_arrays.{merge_arrays}
-import gleam/int
-import gleam/list
+import atomic_array
+import cassidoo_20251110_merge_arrays.{fill_array, merge_arrays, swap}
 import gleeunit
 import gleeunit/should
 
@@ -36,16 +34,19 @@ pub fn hello_world_test() {
 // Just for fun I'm going to try using the first array library I found,
 // 'atomic_array'.
 
-pub fn fill_array(size: Int, values: List(Int)) -> AtomicArray {
-  let arr = atomic_array.new_unsigned(size)
-  values |> list.index_map(fn(x, i) { atomic_array.set(arr, i, x) })
-  arr
-}
-
 pub fn fill_array_test() {
   fill_array(5, [1, 2, 3])
   |> atomic_array.to_list
   |> should.equal([1, 2, 3, 0, 0])
+}
+
+pub fn swap_test() {
+  let arr = fill_array(5, [1, 2, 3, 4, 5])
+  let _ = swap(arr, 1, 3)
+
+  arr
+  |> atomic_array.to_list
+  |> should.equal([1, 4, 3, 2, 5])
 }
 
 pub fn merge_arrays_example_test() {
