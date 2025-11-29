@@ -1,4 +1,8 @@
-import cassidoo_20251124_meal_prep.{Answer, Task, max_meal_prep_tasks}
+import cassidoo_20251124_meal_prep.{
+  Answer, Task, all_possible_schedules, max_meal_prep_tasks, ranges_collide,
+  valid,
+}
+import gleam/list
 import gleeunit
 import gleeunit/should
 
@@ -59,4 +63,24 @@ pub fn avoid_long_task_test() {
 
 pub fn empty_test() {
   [] |> max_meal_prep_tasks |> should.equal(Answer(count: 0, chosen: []))
+}
+
+pub fn all_possible_schedules_test() {
+  [Task("A", 1, 2), Task("B", 3, 4)]
+  |> all_possible_schedules
+  |> list.map(fn(a) { a |> list.map(fn(b) { b.name }) })
+  |> should.equal([["A", "B"], ["A"], ["B"], []])
+}
+
+pub fn ranges_collide_test() {
+  ranges_collide(#(0, 1), #(2, 3)) |> should.be_false
+  ranges_collide(#(0, 1), #(1, 2)) |> should.be_false
+  ranges_collide(#(0, 3), #(1, 4)) |> should.be_true
+  ranges_collide(#(0, 5), #(2, 3)) |> should.be_true
+}
+
+pub fn valid_test() {
+  [Task("A", 9, 11), Task("B", 10, 12)]
+  |> valid
+  |> should.be_false
 }
