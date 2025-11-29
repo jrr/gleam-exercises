@@ -25,22 +25,38 @@ pub fn main() -> Nil {
 //     chosen: ["Make Gravy", "Mash Potatoes", "Prep Salad"]
 //   }
 
-// gleeunit test functions end in `_test`
 pub fn example_test() {
-  let tasks = [
+  [
     Task("Make Gravy", 10, 11),
     Task("Mash Potatoes", 11, 12),
     Task("Bake Rolls", 11, 13),
     Task("Prep Salad", 12, 13),
   ]
-
-  let result = max_meal_prep_tasks(tasks)
-  result
+  |> max_meal_prep_tasks
   |> should.equal(
-    Answer(count: 3, chosen: [
-      "Make Gravy",
-      "Mash Potatoes",
-      "Prep Salad",
-    ]),
+    Answer(count: 3, chosen: ["Make Gravy", "Mash Potatoes", "Prep Salad"]),
   )
+}
+
+pub fn simple_test() {
+  [
+    Task("Make Gravy", 10, 11),
+  ]
+  |> max_meal_prep_tasks
+  |> should.equal(Answer(count: 1, chosen: ["Make Gravy"]))
+}
+
+pub fn avoid_long_task_test() {
+  [
+    Task("Long Task", 8, 12),
+    Task("Short 1", 9, 10),
+    Task("Short 2", 10, 11),
+    Task("Short 3", 11, 12),
+  ]
+  |> max_meal_prep_tasks
+  |> should.equal(Answer(count: 3, chosen: ["Short 1", "Short 2", "Short 3"]))
+}
+
+pub fn empty_test() {
+  [] |> max_meal_prep_tasks |> should.equal(Answer(count: 0, chosen: []))
 }
