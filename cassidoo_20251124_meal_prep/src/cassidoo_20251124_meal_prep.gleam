@@ -1,12 +1,8 @@
 import gleam/bool
+import gleam/function
 import gleam/int
-import gleam/io
 import gleam/list
 import gleam/option
-
-pub fn main() -> Nil {
-  io.println("Hello from cassidoo_20251124_meal_prep!")
-}
 
 pub type Task {
   Task(name: String, start_time: Int, end_time: Int)
@@ -41,15 +37,18 @@ pub fn ranges_collide(left: #(Int, Int), right: #(Int, Int)) -> Bool {
   }
 }
 
-fn tasks_collide(a: Task, b: Task) -> Bool {
-  ranges_collide(#(a.start_time, a.end_time), #(b.start_time, b.end_time))
+fn tasks_collide(pair: #(Task, Task)) -> Bool {
+  ranges_collide(#({ pair.0 }.start_time, { pair.0 }.end_time), #(
+    { pair.1 }.start_time,
+    { pair.1 }.end_time,
+  ))
 }
 
 pub fn valid(tasks: Schedule) -> Bool {
   tasks
   |> list.combination_pairs
-  |> list.map(fn(pair) { tasks_collide(pair.0, pair.1) })
-  |> list.any(fn(x) { x })
+  |> list.map(tasks_collide)
+  |> list.any(function.identity)
   |> bool.negate
 }
 
