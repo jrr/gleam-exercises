@@ -30,11 +30,29 @@ pub fn fill_array(size: Int, values: List(Int)) -> AtomicArray {
 }
 
 pub fn in_place_sort(arr: AtomicArray) {
-  // todo: actual in-place sort ;)
+  list.range(0, atomic_array.size(arr) - 1)
+  |> list.map(fn(i) {
+    let remaining = atomic_array.to_list(arr) |> list.drop(i)
+    let assert [head, ..tail] = remaining
+
+    let swap_target = find_min(tail)
+
+    case swap_target, head {
+      Ok(x), v if x.0 < v -> {
+        swap(arr, x.1 + i + 1, i)
+        Nil
+      }
+      _, _ -> {
+        Nil
+      }
+    }
+  })
+}
+
+fn find_min(arr: List(Int)) {
   arr
-  |> atomic_array.to_list
-  |> list.sort(int.compare)
-  |> list.index_map(fn(x, i) { atomic_array.set(arr, i, x) })
+  |> list.index_map(fn(x, i) { #(x, i) })
+  |> list.max(fn(a, b) { int.compare(b.0, a.0) })
 }
 
 pub fn merge_arrays(large: AtomicArray, small: AtomicArray) {
