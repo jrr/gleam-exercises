@@ -23,13 +23,6 @@ pub fn main() -> Nil {
 // knightMoves([1, 2])
 // > [[0, 0], [0, 4], [2, 0], [2, 4], [3, 1], [3, 3]]
 
-pub fn hello_world_test() {
-  let name = "Joe"
-  let greeting = "Hello, " <> name <> "!"
-
-  assert greeting == "Hello, Joe!"
-}
-
 pub fn knight_moves_center_test() {
   knight_moves(#(4, 4))
   |> should.equal([
